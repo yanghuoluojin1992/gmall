@@ -6,7 +6,9 @@ import com.atguigu.gmall.manage.mapper.*;
 import com.atguigu.gmall.service.ManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -24,6 +26,16 @@ public class ManageServiceImpl implements ManageService {
     private BaseAttrInfoMapper baseAttrInfoMapper;
     @Autowired
     private BaseAttrValueMapper baseAttrValueMapper;
+    @Autowired
+    private SpuInfoMapper spuInfoMapper;
+    @Autowired
+    private SpuImageMapper spuImageMapper;
+    @Autowired
+    private SpuSaleAttrMapper spuSaleAttrMapper;
+    @Autowired
+    private SpuSaleAttrValueMapper spuSaleAttrValueMapper;
+    @Autowired
+    private BaseSaleAttrMapper baseSaleAttrMapper;
 
     @Override
     public List<BaseCatalog1> getCatalog1() {
@@ -88,4 +100,45 @@ public class ManageServiceImpl implements ManageService {
         attrInfo.setAttrValueList(attrValueList);
         return attrInfo;
     }
+
+    @Override
+    public List<SpuInfo> getSpuList(SpuInfo spuInfo) {
+        return spuInfoMapper.select(spuInfo);
+    }
+
+    @Override
+    public List<BaseSaleAttr> getBaseSaleAttrList() {
+
+        return baseSaleAttrMapper.selectAll();
+
+    }
+
+    @Override
+    @Transactional
+    public void saveSpuInfo(SpuInfo spuInfo) {
+        spuInfoMapper.insertSelective(spuInfo);
+        List<SpuImage> spuImageList = spuInfo.getSpuImageList();
+        if (spuImageList!=null &&spuImageList.size()>0){
+            for (SpuImage spuImage : spuImageList) {
+                spuImage.setSpuId(spuInfo.getId());
+                spuImageMapper.insertSelective(spuImage);
+            }
+        }
+        List<SpuSaleAttr> spuSaleAttrList = spuInfo.getSpuSaleAttrList();
+        if (spuSaleAttrList!=null &&spuSaleAttrList.size()>0){
+            for (SpuSaleAttr spuSaleAttr : spuSaleAttrList) {
+                spuSaleAttr.setSpuId(spuInfo.getId());
+                spuSaleAttrMapper.insertSelective(spuSaleAttr);
+                List<SpuSaleAttrValue> spuSaleAttrValueList = spuSaleAttr.getSpuSaleAttrValueList();
+                if(spuSaleAttrValueList!=null && spuSaleAttrValueList.size()>0){
+                    for (SpuSaleAttrValue spuSaleAttrValue : spuSaleAttrValueList) {
+                        spuSaleAttrValue.setSpuId(spuInfo.getId());
+                        spuSaleAttrValueMapper.insertSelective(spuSaleAttrValue);
+                    }
+                }
+            }
+        }
+    }
+
+
 }

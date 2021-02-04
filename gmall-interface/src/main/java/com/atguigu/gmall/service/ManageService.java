@@ -21,4 +21,19 @@ public interface ManageService {
      * @return
      */
     BaseAttrInfo getAttrInfoById(String attrId);
+
+    /**
+     * 根据catalog3Id查询spu列表
+     * @param spuInfo
+     * @return
+     */
+    List<SpuInfo> getSpuList(SpuInfo spuInfo);
+
+    /**
+     * 获取基本销售属性集合
+     * @return
+     */
+    List<BaseSaleAttr> getBaseSaleAttrList();
+
+    void saveSpuInfo(SpuInfo spuInfo);
 }
