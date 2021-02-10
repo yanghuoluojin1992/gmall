@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -11,6 +12,7 @@
         <module name="gmll-web-util" />
         <module name="gmall-manage-service" />
         <module name="gmall-manage-web" />
+        <module name="gamll-item-web" />
         <module name="gmall-service-util" />
         <module name="fastdfs-client-java" />
         <module name="gmall-usermanage" />
@@ -20,6 +22,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="fastdfs-client-java" target="1.6" />
+      <module name="gamll-item-web" target="1.8" />
       <module name="gmall-bean" target="1.8" />
       <module name="gmall-common-util" target="1.8" />
       <module name="gmall-interface" target="1.8" />
@@ -34,6 +37,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="gamll-item-web" options="" />
       <module name="gmall-manage-service" options="" />
       <module name="gmall-manage-web" options="" />
       <module name="gmall-order-web" options="" />

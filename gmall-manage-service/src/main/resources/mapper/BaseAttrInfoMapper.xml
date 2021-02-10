@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.manage.mapper.BaseAttrInfoMapper">
+    <resultMap id="AttrInfo" type="com.atguigu.gmall.bean.BaseAttrInfo" autoMapping="true">
+        <result property="id" column="id"></result>
+        <collection property="attrValueList" ofType="com.atguigu.gmall.bean.BaseAttrValue" autoMapping="true">
+            <result property="id" column="attr_value_id"></result>
+        </collection>
+    </resultMap>
+    <select id="getAttrInfo" resultMap="AttrInfo">
+        <!--List<BaseAttrInfo> getAttrInfo(String catalog3Id);-->
+        SELECT bi.id,bi.attr_name,bi.catalog3_id,
+        bv.id AS attr_value_id,bv.value_name
+        FROM base_attr_info bi INNER JOIN base_attr_value bv
+        ON bi.id = bv.attr_id WHERE bi.catalog3_id = #{catalog3Id}
+    </select>
+</mapper>
