@@ -21,4 +21,11 @@ public interface UserService {
      * @return
      */
     List<UserAddress> getUserAddressById(String userId);
+
+    /**
+     * 用户登录
+     * @param userInfo
+     * @return
+     */
+    UserInfo login(UserInfo userInfo);
 }

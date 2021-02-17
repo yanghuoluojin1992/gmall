@@ -5,11 +5,11 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.bean.SkuInfo;
 import com.atguigu.gmall.bean.SkuSaleAttrValue;
 import com.atguigu.gmall.bean.SpuSaleAttr;
+import com.atguigu.gmall.service.ListService;
 import com.atguigu.gmall.service.ManageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +21,8 @@ import java.util.List;
 public class ItemController {
     @Reference
     private ManageService manageService;
+    @Reference
+    private ListService listService;
 
     @RequestMapping("{skuId}.html")
     public String item(@PathVariable String skuId, HttpServletRequest request){
@@ -29,10 +31,12 @@ public class ItemController {
         request.setAttribute("skuInfo",skuInfo);
 
         //根据spuId查询销售属性和销售属性值集合,并联合skuId获取选中的销售属性和值
+        //销售属性回显并锁定
         List<SpuSaleAttr> spuSaleAttrList = manageService.getSpuSaleAttrListBySkuId(skuInfo.getId(),skuInfo.getSpuId());
         request.setAttribute("spuSaleAttrList",spuSaleAttrList);
 
         //根据spuId查询销售属性值id集合，根据用户选择的销售属性值id组成“{"156|168":"2",157|159:3}” 在从前台js判断skuid是否存在，进行页面跳转
+        //点击销售属性实现切换
         List<SkuSaleAttrValue> skuSaleAttrValueList = manageService.getSkuSaleValueList(skuInfo.getSpuId());
         String key = "";
         HashMap<String, Object> map = new HashMap<>();
@@ -53,9 +57,8 @@ public class ItemController {
         String valuesSkuJson  = JSON.toJSONString(map);
         request.setAttribute("valuesSkuJson",valuesSkuJson);
 
-
-
-
+        //调用热点统计服务
+        listService.incrHotScore(skuId);
         return  "item";
     }
 }

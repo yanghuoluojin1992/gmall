@@ -1,0 +1,22 @@
+package com.atguigu.gmall.bean;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * created by luogang on 2021-02-13 22:38
+ */
+@Data
+public class SkuLsResult implements Serializable {
+
+    List<SkuLsInfo> skuLsInfoList;
+
+    long total;
+
+    long totalPages;
+
+    List<String> attrValueIdList;
+
+}
